@@ -260,3 +260,150 @@ In a more complex command, I piped errors and standard output to different comma
 /challenge/hack 2>&1 | tee >(cat > the) | /challenge/hack | tee >(cat > planet)
 ```
 This demonstrated advanced use of piping and redirection.
+
+# CTF Writeup: Shell Variables
+
+This writeup documents the steps taken to solve challenges related to shell variables in a Capture The Flag (CTF) competition. Each section includes the steps used, commands executed, and the flags obtained.
+
+## 1. Printing Variables
+**Objective:** Print the value of the `$FLAG` variable.
+
+- **Steps:**
+  1. Use `echo` to print the `$FLAG` variable.
+
+- **Command:**
+  ```bash
+  echo $FLAG
+  ```
+
+- **Flag:**  
+  `pwn.college{Yg5L21CmG9_fTwMK0Ytm7r8LtMO.ddTN1QDL0czN0czW}`
+
+---
+
+## 2. Setting Variables
+**Objective:** Assign the value `COLLEGE` to the variable `PWN`.
+
+- **Steps:**
+  1. Assign `COLLEGE` to the variable `PWN`.
+
+- **Command:**
+  ```bash
+  PWN=COLLEGE
+  ```
+
+- **Flag:**  
+  `pwn.college{EFN-Tlo0VEvKCXjGM6VfJePd_d7.dlTN1QDL0czN0czW}`
+
+---
+
+## 3. Multi-Word Variables
+**Objective:** Assign a multi-word value to a variable using quotes.
+
+- **Steps:**
+  1. Assign the value `COLLEGE YEAH` to the variable `PWN` using quotes.
+
+- **Command:**
+  ```bash
+  PWN="COLLEGE YEAH"
+  ```
+
+- **Flag:**  
+  `pwn.college{Q4OeINjoy_rB1jR4MFOkLh-3l2o.dBjN1QDL0czN0czW}`
+
+---
+
+## 4. Exporting Variables
+**Objective:** Export a variable and verify its availability.
+
+- **Steps:**
+  1. Assign `COLLEGE` to the `PWN` variable.
+  2. Export the `PWN` variable.
+  3. Assign `PWN` to `COLLEGE`.
+  4. Run the `/challenge/run` command.
+
+- **Commands:**
+  ```bash
+  PWN=COLLEGE 
+  export PWN
+  COLLEGE=PWN
+  /challenge/run
+  ```
+
+- **Flag:**  
+  `pwn.college{MKMxGt3pvvDScEzdLxbrq7WB5OK.dJjN1QDL0czN0czW}`
+
+---
+
+## 5. Printing Exported Variables
+**Objective:** Print all environment variables and filter for `FLAG`.
+
+- **Steps:**
+  1. Run the `env` command to list all variables.
+  2. Optionally, pipe output to `grep` to find `FLAG`.
+
+- **Commands:**
+  ```bash
+  env
+  # or
+  env | grep FLAG
+  ```
+
+- **Flag:**  
+  `pwn.college{I7VSkYwBRJwRMfGXcO20yVa1Tc1.dhTN1QDL0czN0czW}`
+
+---
+
+## 6. Storing Command Output
+**Objective:** Store the output of a command in a variable.
+
+- **Steps:**
+  1. Use command substitution to assign the output of `/challenge/run` to `PWN`.
+  2. Use `echo` to print the value of `FLAG` inside `$PWN`.
+
+- **Commands:**
+  ```bash
+  PWN=$(/challenge/run)
+  echo $PWN
+  ```
+
+- **Flag:**  
+  `pwn.college{oFuYMYkaVxIfdBVRf07AaDAUsKZ.dVzN0UDL0czN0czW}`
+
+---
+
+## 7. Reading Input
+**Objective:** Read user input into a variable.
+
+- **Steps:**
+  1. Use the `read` command with `PWN` as the argument.
+  2. Input the value `COLLEGE`.
+
+- **Commands:**
+  ```bash
+  read PWN
+  # Input: COLLEGE
+  ```
+
+- **Flag:**  
+  `pwn.college{UUMNemt7WGHenfCRL-u3dDieRCd.dhzN1QDL0czN0czW}`
+
+---
+
+## 8. Reading Files
+**Objective:** Read the contents of a file into a variable.
+
+- **Steps:**
+  1. Use the `read` command with the `PWN` variable as the parameter, using `<` to input the contents of `read_me`.
+
+- **Command:**
+  ```bash
+  read PWN < /challenge/read_me
+  ```
+
+- **Flag:**  
+  `pwn.college{cpD_2n0uKrWtqczhx5yIWq3tOk2.dBjM4QDL0czN0czW}`
+
+---
+
+This writeup details the methods used to manipulate shell variables effectively in the context of the CTF challenge. Each flag corresponds to a specific task related to shell variables.
