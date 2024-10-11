@@ -261,9 +261,7 @@ In a more complex command, I piped errors and standard output to different comma
 ```
 This demonstrated advanced use of piping and redirection.
 
-# CTF Writeup: Shell Variables
-
-This writeup documents the steps taken to solve challenges related to shell variables in a Capture The Flag (CTF) competition. Each section includes the steps used, commands executed, and the flags obtained.
+# Shell Variables
 
 ## 1. Printing Variables
 **Objective:** Print the value of the `$FLAG` variable.
@@ -405,5 +403,3 @@ This writeup documents the steps taken to solve challenges related to shell vari
   `pwn.college{cpD_2n0uKrWtqczhx5yIWq3tOk2.dBjM4QDL0czN0czW}`
 
 ---
-
-This writeup details the methods used to manipulate shell variables effectively in the context of the CTF challenge. Each flag corresponds to a specific task related to shell variables.
