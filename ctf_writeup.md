@@ -403,3 +403,194 @@ This demonstrated advanced use of piping and redirection.
   `pwn.college{cpD_2n0uKrWtqczhx5yIWq3tOk2.dBjM4QDL0czN0czW}`
 
 ---
+
+# Processes and Jobs
+
+## Challenge 1: Listing Processes
+
+**Steps:**
+1. List all processes using the `ps aux` command.
+2. Pipe the output and use `grep` to find the word "challenge".
+3. Copy the renamed command and execute it.
+
+**Commands:**
+```bash
+ps aux | grep /challenge
+/challenge/30460-run-15236
+```
+
+**Flag:** 
+```
+pwn.college{0IVwhCBWuhtyxTlxkEYkRVcUhkC.dhzM4QDL0czN0czW}
+```
+
+---
+
+## Challenge 2: Killing Processes
+
+**Steps:**
+1. List all processes using the `ps aux` command.
+2. Pipe the output and use `grep` to find the word "dont_run".
+3. Identify the PID and kill it.
+4. Execute the run command.
+
+**Commands:**
+```bash
+ps aux | grep /challenge
+kill 73
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{8AH_eLDBLBPFjhLzOHOg9x6Q7LW.dJDN4QDL0czN0czW}
+```
+
+---
+
+## Challenge 3: Interrupting Processes
+
+**Steps:**
+1. Execute the run command.
+2. Exit the process using Ctrl-C.
+
+**Commands:**
+```bash
+/challenge/run
+# Ctrl-C
+```
+
+**Flag:** 
+```
+pwn.college{AVfob4WVEHpkAqkRm1XmRwQaGZC.dNDN4QDL0czN0czW}
+```
+
+---
+
+## Challenge 4: Suspending Processes
+
+**Steps:**
+1. Execute the run command.
+2. Suspend the process using Ctrl-Z.
+3. Execute the run command again.
+
+**Commands:**
+```bash
+/challenge/run
+# Ctrl-Z
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{Yb8K5J_AvVMLS-1cR8zhmpjiP_w.dVDN4QDL0czN0czW}
+```
+
+---
+
+## Challenge 5: Resuming Processes
+
+**Steps:**
+1. Execute the run command.
+2. Suspend the process using Ctrl-Z.
+3. Restart the process using `fg`.
+
+**Commands:**
+```bash
+/challenge/run
+# Ctrl-Z
+fg
+```
+
+**Flag:** 
+```
+pwn.college{4LvMxl3-vO6YhkUBd3OEzynZgES.dZDN4QDL0czN0czW}
+```
+
+---
+
+## Challenge 6: Backgrounding Processes
+
+**Steps:**
+1. Execute the run command.
+2. Suspend the process using Ctrl-Z.
+3. Restart the process in the background using `bg`.
+4. Execute the run command again.
+
+**Commands:**
+```bash
+/challenge/run
+# Ctrl-Z
+bg
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{0XW-2eMsYmPb_My5AQ5PcoJhUIF.ddDN4QDL0czN0czW}
+```
+
+---
+
+## Challenge 7: Foregrounding Processes
+
+**Steps:**
+1. Execute the run command.
+2. Suspend the process using Ctrl-Z.
+3. Restart the process in the background using `bg`.
+4. Bring the process back to the foreground using `fg`.
+5. Hit enter to get the flag.
+
+**Commands:**
+```bash
+/challenge/run
+# Ctrl-Z
+bg
+fg
+# ENTER
+```
+
+**Flag:** 
+```
+pwn.college{ojCtFRtdpWutWTzbfgPDNHJ0wTt.dhDN4QDL0czN0czW}
+```
+
+---
+
+## Challenge 8: Starting Background Processes
+
+**Steps:**
+1. Execute the run command with `&` to run it in the background.
+
+**Commands:**
+```bash
+/challenge/run &
+```
+
+**Flag:** 
+```
+pwn.college{YJi_gcP-E-nPAo1soFuU1VYCU2M.dlDN4QDL0czN0czW}
+```
+
+---
+
+## Challenge 9: Process Exit Codes
+
+**Steps:**
+1. Execute the `get-code` command.
+2. Find the exit code using `echo $?`.
+3. Input the found code to the `submit-code` command.
+
+**Commands:**
+```bash
+/challenge/get-code
+echo $?
+/challenge/submit-code 198
+```
+
+**Flag:** 
+```
+pwn.college{oQfeapHxddKrKh8zcwFSD2iWyOG.dljN4UDL0czN0czW}
+``` 
+
+---
