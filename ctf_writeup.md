@@ -594,3 +594,190 @@ pwn.college{oQfeapHxddKrKh8zcwFSD2iWyOG.dljN4UDL0czN0czW}
 ``` 
 
 ---
+
+# Perceiving Permissions
+
+## Challenge 1: Changing File Ownership
+
+**Steps:**
+1. Use the `chown` command to give the user `hacker` ownership of the `/flag` file.
+2. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+chown hacker /flag
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{s5LePg1zD0IjpjBQNMFeXXEdGXZ.dFTM2QDL0czN0czW}
+```
+
+---
+
+## Challenge 2: Groups and Files
+
+**Steps:**
+1. Use the `chgrp` command to change the group ownership of the `/flag` file to `hacker`.
+2. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+chgrp hacker /flag
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{kWZEqPq6zY5qIO8TwVCpLMikzv0.dFzNyUDL0czN0czW}
+```
+
+---
+
+## Challenge 3: Fun With Group Names
+
+**Steps:**
+1. Use the `id` command to get the group ID.
+2. Use the `chgrp` command to give the group ownership of the `/flag` file with the newly found group name.
+3. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+id
+chgrp grp6337 /flag
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{03Ui-9zSVRmholTi7eVKPdpIzwc.dJzNyUDL0czN0czW}
+```
+
+---
+
+## Challenge 4: Changing Permissions
+
+**Steps:**
+1. Use the `chmod` command to give all users, groups, and others read, write, and execute permissions for `/flag`.
+2. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+chmod a+rwx /flag
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{8gNlF6hkZxwAMqKnKZg7_UiFpwC.dNzNyUDL0czN0czW}
+```
+
+---
+
+## Challenge 5: Executable Files
+
+**Steps:**
+1. Use the `chmod` command to give users execute permission for the `run` command.
+2. Execute the `run` command.
+
+**Commands:**
+```bash
+chmod u+x /challenge/run
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{ImrY7YMCB1cbAZTFVsF7OkUF9sR.dJTM2QDL0czN0czW}
+```
+
+---
+
+## Challenge 6: Permission Tweaking Practice
+
+**Steps:**
+1. Execute the `run` command to start the challenge.
+2. Remove read permissions for the world.
+3. Remove all permissions for everyone.
+4. Give write permissions to the world.
+5. Remove write permission for the world.
+6. Give write permissions to groups and the world.
+7. Give execute permissions to groups.
+8. Give read and execute permissions to the world.
+9. Remove read and execute permissions from the world.
+10. Use the `chmod` command to give read access to the user.
+11. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+/challenge/run
+chmod o-r /challenge/pwn
+chmod a-rwx /challenge/pwn 
+chmod o+w /challenge/pwn
+chmod o-w /challenge/pwn
+chmod go+w /challenge/pwn 
+chmod g+x /challenge/pwn
+chmod o+rx /challenge/pwn
+chmod o-rx /challenge/pwn
+chmod u+r /flag 
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{ImrY7YMCB1cbAZTFVsF7OkUF9sR.dJTM2QDL0czN0czW}
+```
+
+---
+
+## Challenge 7: Permission Setting Practice
+
+**Steps:**
+1. Execute the `run` command to start the challenge.
+2. Set permissions for users, groups, and others in a sequence.
+3. Use the `chmod` command to give read access to the user.
+4. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+/challenge/run
+chmod u=x,g=wx,o=w /challenge/pwn
+chmod u=wx,g=w,o=rx /challenge/pwn
+chmod u=-,g=rwx,o=rx /challenge/pwn
+chmod u=w,g=rx,o=rw /challenge/pwn
+chmod u=rw,g=-,o=wx /challenge/pwn
+chmod u=wx,g=-,o=rx /challenge/pwn
+chmod u=rx,g=x,o=- /challenge/pwn
+chmod u=rx,g=x,o=- /challenge/pwn
+chmod u+r /flag 
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{MkHhSbZaAIz623fKjCOT_kp5_38.dNTM5QDL0czN0czW}
+```
+
+---
+
+## Challenge 8: The SUID Bit
+
+**Steps:**
+1. Use the `chmod` command to give users the SUID permission for the `/challenge/get_root` command.
+2. Execute the `get_root` command.
+3. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+chmod u+s /challenge/get_root
+/challenge/get_root
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{ot_PBsU6mRSYn_X6Fk5VU-3yzks.dNTM2QDL0czN0czW}
+```
+
+---
