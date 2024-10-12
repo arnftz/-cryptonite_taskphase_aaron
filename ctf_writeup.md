@@ -781,3 +781,258 @@ pwn.college{ot_PBsU6mRSYn_X6Fk5VU-3yzks.dNTM2QDL0czN0czW}
 ```
 
 ---
+
+# Untangling Users
+
+## Becoming Root With su
+
+**Steps:**
+1. Use the `su` command to switch to the root user.
+2. Enter the password `hack-the-planet`.
+3. Use the `cat` command with `/flag` as the parameter to read the flag.
+
+**Commands:**
+```bash
+su
+hack-the-planet
+cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{0SStI5mkoFwSeZuLOvIEiOKRzHu.dVTN0UDL0czN0czW}
+```
+
+---
+
+## Other Users With su
+
+**Steps:**
+1. Use the `su` command with `zardus` as the parameter to specify the user.
+2. Enter the password `dont-hack-me`.
+3. Execute the `run` command upon login.
+
+**Commands:**
+```bash
+su zardus
+dont-hack-me
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{McEP6revcXQ2H-jurnx9hYfDQHD.dZTN0UDL0czN0czW}
+```
+
+---
+
+## Cracking Passwords
+
+**Steps:**
+1. Use the `john` command with the leak file as the parameter to find the password for `zardus`.
+2. Use the `su` command with `zardus` as the parameter and enter the found password.
+3. Execute the `run` command.
+
+**Commands:**
+```bash
+john /challenge/shadow-leak
+su zardus
+aadvark
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{EAYcNbCCtDhzRlPokD5vpF91qyG.ddTN0UDL0czN0czW}
+```
+
+---
+
+## Using Sudo
+
+**Steps:**
+1. Use the `sudo` command to read the `/flag` file using `cat`.
+
+**Commands:**
+```bash
+sudo cat /flag
+```
+
+**Flag:** 
+```
+pwn.college{oPBk71P08goBNOJFjBCrL62AlTi.dhTN0UDL0czN0czW}
+```
+
+---
+
+# Chaining Commands
+
+## Chaining with Semicolons
+
+**Steps:**
+1. Use a semicolon to chain both `pwn` and `college` commands.
+
+**Commands:**
+```bash
+/challenge/pwn ; /challenge/college
+```
+
+**Flag:** 
+```
+pwn.college{srp7_wWUYt7MNfzlyqJOkrbvOcM.dVTN4QDL0czN0czW}
+```
+
+---
+
+## Your First Shell Script
+
+**Steps:**
+1. Use the `touch` command to create a bash file `x.sh`.
+2. Use the `echo` command with the required chained commands as a parameter in quotes and redirect the output to `x.sh`.
+3. Execute `x.sh` using the `bash` command.
+
+**Commands:**
+```bash
+touch x.sh
+echo "/challenge/pwn ; /challenge/college" > x.sh
+bash x.sh
+```
+
+**Flag:** 
+```
+pwn.college{gQYgDg3mQlp_8uSuXHx8qpapPZh.dFzN4QDL0czN0czW}
+```
+
+---
+
+## Redirecting Script Output
+
+**Steps:**
+1. Use the `touch` command to create a bash file `x.sh`.
+2. Use the `echo` command with the required chained commands as a parameter in quotes and redirect the output to `x.sh`.
+3. Execute `x.sh` using the `bash` command and pipe the output to the `solve` command.
+
+**Commands:**
+```bash
+touch x.sh
+echo "/challenge/pwn ; /challenge/college" > x.sh
+bash x.sh | /challenge/solve
+```
+
+**Flag:** 
+```
+pwn.college{oQk7wlXRPX2Ms-oEsZHwcTwPkQp.dhTM5QDL0czN0czW}
+```
+
+---
+
+## Executable Shell Scripts
+
+**Steps:**
+1. Use the `touch` command to create a bash file `x.sh`.
+2. Use the `echo` command with the required command as a parameter in quotes and redirect the output to `x.sh`.
+3. Use `chmod` to modify user permissions for the file to be executable.
+4. Execute the `./x.sh` file.
+
+**Commands:**
+```bash
+touch x.sh
+echo "/challenge/solve" > x.sh
+chmod u=rwx x.sh
+./x.sh
+```
+
+**Flag:** 
+```
+pwn.college{QqXU_155Sfvn84JPxux-hm6zHpC.dRzNyUDL0czN0czW}
+```
+
+---
+
+# Pondering PATH
+
+## The PATH Variable
+
+**Steps:**
+1. Rewrite `PATH` to only include `/run/challenge/bin`.
+2. Execute the `run` command.
+
+**Commands:**
+```bash
+PATH="/run/challenge/bin"
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{g3YOKR_rxQmGgGlX-2j5mqzuDBl.dZzNwUDL0czN0czW}
+```
+
+---
+
+## Setting PATH
+
+**Steps:**
+1. Rewrite `PATH` to include the `more_commands` folder.
+2. Execute the `run` command.
+
+**Commands:**
+```bash
+PATH="/challenge/more_commands"
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{YTPsd9l_1RzLg36F8rVe0Yf-olI.dVzNyUDL0czN0czW}
+```
+
+---
+
+## Adding Commands
+
+**Steps:**
+1. Use the `touch` command to create a file in home called `win`.
+2. Use the `echo` command to write `read /flag` into the `win` file.
+3. Use `chmod` to make it executable.
+4. Add the home/hacker path to the `PATH` variable.
+5. Execute the `run` command.
+
+**Commands:**
+```bash
+touch win
+echo "read /flag" > win
+chmod a=rwx win
+PATH='~'
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{ou0iXM8lGuXvL71yiVFCcOHDLVD.dZzNyUDL0czN0czW}
+```
+
+---
+
+## Hijacking Commands
+
+**Steps:**
+1. Use the `touch` command to create a file in home called `rm`.
+2. Use the `echo` command to write `cat /flag` into the `rm` file.
+3. Use `chmod` to make it executable.
+4. Add the home/hacker path to the beginning of the `PATH` variable.
+5. Execute the `run` command.
+
+**Commands:**
+```bash
+touch rm
+echo "cat /flag" > rm
+chmod a=rwx rm
+PATH="~:/run/challenge/bin:/run/workspace/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+/challenge/run
+```
+
+**Flag:** 
+```
+pwn.college{wNe8MC6w-rGcTlBVbBASMAFX_WR.ddzNyUDL0czN0czW}
+```
