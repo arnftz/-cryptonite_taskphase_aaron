@@ -1,5 +1,30 @@
 # Cryptography
 
+## C3 (Crypto)
+### Flag
+picoCTF{adlibs}
+
+### Thought process
+* opened the code file to realise its a cipher i have to reverse engineer
+* there are two lookup strings, from reading the code we can see that the first character of the input string's index in lookup 1 corresponds to the first character of encrypted string from lookup 2, but for the 2nd character the lookup two cipher shifts, which is what i have to reverse engineer.
+* i tried to understand the reverse pattern by guessing the first 3 characters of the unencrypted string which turned out to be '#as' and its encrypted counterpart 'DLS'
+* so the solution is, reverse the subtraction (cur-prev) to (cur+prev) and change 'prev += cur'
+* doing this gives us the decryption code, after running it on our encrypted text we get an output which turns out to be python code in python 2 version as indicated by the print statement without paranthesis  
+* this is where i struggled a bit and did a lot of dumb shit because i couldn't figure out the riddles in the first 4 hashtags ( i hate riddles ) but in the end came to the conclusion that maybe #selfinput refers to giving the code as its own input and it worked and i felt dumb and questioned my existence, anyways challenge completed.
+
+### Concepts Learned
+* how to reverse engineer cyclical ciphers
+* how to ignore useless clues in riddles (almost)
+
+### Incorrect Paths
+* i thought that #asciiorder and #fortychars meant that i had to order some string of 40 characters in ascii order and input it
+
+### Steps to Solve
+* reverse engineer the cyclical cipher by finding pattern of decoding
+* make necessary modifications to the code to decode rest of the string
+* take the output which is python code, and feed it back to the same python code to get the flag
+
+
 ## Custom Encryption
 ### Flag
 * flag: picoCTF{custom_d2cr0pt6d_e4530597}
