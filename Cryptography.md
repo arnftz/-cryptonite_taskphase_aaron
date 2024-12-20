@@ -24,6 +24,7 @@ picoCTF{adlibs}
 * make necessary modifications to the code to decode rest of the string
 * take the output which is python code, and feed it back to the same python code to get the flag
 
+# Cryptography
 
 ## Custom Encryption
 ### Flag
@@ -94,3 +95,168 @@ print(f"Recovered plaintext: {m}")
 flag = m.to_bytes((m.bit_length() + 7) // 8, 'big').decode('utf-8')
 print(flag)
 ```
+
+## b00tl3gRSA2
+### Flag
+* flag: picoCTF{bad_1d3a5_2438125}
+### Throught Process
+* saw the hint and the challenge description
+* shifted my focus to e and d rather than tryna prime factorize n like usual
+* i realised e is almost the same size as n, which means the d value which is the mod inverse would be very small
+* googled attacks possible on small d, came across weiner's attack, funny name
+* now, i could have gone the long way and learnt the concept and written the code myself
+* but i was feeling lazy and conveiniently i found [this](https://cryptohack.gitbook.io/cryptobook/untitled/low-private-component-attacks/wieners-attack) link with a custom module attached to it
+* so i just used the module and easily found the flag
+### Steps Taken
+* put the values in the code :)
+```py
+def long_to_bytes(n):
+    length = (n.bit_length() + 7) // 8
+    return n.to_bytes(length, byteorder='big')
+
+#!/usr/bin/env python3
+import owiener
+
+#--------Wiener's attack--------#
+
+d = owiener.attack(e, n)
+
+if d:
+    m = pow(c, d, n)
+    flag = long_to_bytes(m).decode()
+    print(flag)
+else:
+    print("Wiener's Attack failed.")
+```
+
+## oracle_rsa
+### Flag
+* flag: 
+### Throught Process
+* used CPA attack given in the hints
+* found the encrypted c for 2, multiplied with the ciphertext, then decrypted it
+* then took the decrypted hex, divided it by hex 32, took the divided hex, converted it
+* used to found code ```da099``` in the openssl command and decrypted secret
+### Steps Taken
+* basically the same shit above
+
+## No Padding, No Problem
+### Flag
+* flag: picoCTF{m4yb3_Th0se_m3s54g3s_4r3_difurrent_4005534}
+### Throught Process
+* same shit as oracle
+* used the n and e given my the netcat to encrypt the value of 2
+* took the encrypted value and multiplied with the ct
+* decrypted the multiplied value, divided it by 2 and converted to bytes and voila
+### Steps Taken
+* copy n, e and ct
+* use n and e to encrypt the value `2`
+* multiply the encrypted value with the ct
+* decrypt the multiplied value of ct's
+* then take the decrypted value, divide it by 2
+* convert from long to bytes
+* you got the flag
+```py
+def long_to_bytes(n, length=None):
+    length = (n.bit_length() + 7) // 8
+    return n.to_bytes(length, byteorder='big')
+
+m = 2
+c2 = pow(m,e,n)
+C = c2*ct
+
+print(long_to_bytes(C//2))
+```
+
+## triple-secure
+### Flag
+* flag: picoCTF{1_gu3ss_tr1pl3_rs4_1snt_tr1pl3_s3cur3!!!!!!}
+### Throught Process
+* this one is interesting, and i can kinda already see the vulnerability because they use 3 primes and multiply them among each other
+* which means i basically have 3 equations for 3 variables, if i can find the p q and r, im set
+* after finding p q r, i just gotta find the d values for the respective n values and then reverse the decryption
+* istg i wrote the code and found the flag on the first try
+### Steps Taken
+* find p q r
+* find phi_n for all n
+* find d for all n
+* reverse encryption
+* find flag
+```py
+import math
+from sympy import mod_inverse
+
+def long_to_bytes(n, length=None):
+    length = (n.bit_length() + 7) // 8
+    return n.to_bytes(length, byteorder='big')
+
+def find_pqr(n1, n2, n3):
+    product = n1 * n2 * n3
+    pqr = math.isqrt(product)
+    p = pqr // n3
+    q = pqr // n2
+    r = pqr // n1
+    return p, q, r
+
+p1, q1, r1 = find_pqr(n1, n2, n3)
+
+def phi(n, p, q):
+    return (p - 1) * (q - 1)
+
+phi_n1 = phi(n1, p1, q1)
+phi_n2 = phi(n2, p1, r1) 
+phi_n3 = phi(n3, q1, r1) 
+
+# Find the modular inverse of e mod φ(n) for each n
+d1 = mod_inverse(e, phi_n1)
+d2 = mod_inverse(e, phi_n2)
+d3 = mod_inverse(e, phi_n3)
+
+d = [d3,d2,d1]
+n = [n3,n2,n1]
+
+for i in range(len(d)):
+    c = pow(c, d[i], n[i])
+
+print(long_to_bytes(c))
+```
+
+## sum-o-primes
+### Flag
+* flag: picoCTF{1_gu3ss_tr1pl3_rs4_1snt_tr1pl3_s3cur3!!!!!!}
+### Throught Process
+* similar to last instead they have given the n value and sum of p and q
+* using basic math i will find p and q
+* and the rest is childs play, and i was right
+* found p and q, found d, reversed ct
+### Steps Taken
+* find p q using basic math really
+* find phi_n
+* find d
+* reverse encryption
+* find flag
+```py
+import math
+from sympy import mod_inverse
+
+def find_p_q(n, s):
+    discriminant = s**2 - 4 * n
+    root = math.isqrt(discriminant) 
+    if root * root != discriminant:
+        return None
+    p = (s + root) // 2
+    q = (s - root) // 2
+    if p * q == n:
+        return p, q
+    else:
+        return None 
+    
+def long_to_bytes(n, length=None):
+    length = (n.bit_length() + 7) // 8
+    return n.to_bytes(length, byteorder='big')
+
+p, q = find_p_q(n, x)
+d = mod_inverse(65537, (p-1)*(q-1))
+print(long_to_bytes(pow(c,d,n)))
+```
+
