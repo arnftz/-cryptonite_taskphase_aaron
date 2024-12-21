@@ -177,3 +177,113 @@ for i in range(31, 16, -2):
     decoded[i] = encoded[i]
 print(''.join(decoded))
 ```
+
+## Vault Door Training
+### Flag
+* Flag : picoCTF{w4rm1ng_Up_w1tH_jAv4_eec0716b713}
+### Thought Process
+* kinda dumb, i just did read the file onto the console
+### Steps Taken
+* cat the file
+
+## Vault Door 1
+### Flag
+* Flag : picoCTF{d35cr4mbl3_tH3_cH4r4cT3r5_f6daf4}
+### Thought Process
+* so basically i just have to rearrange the passwords in index order
+### Steps Taken
+* i rearranged the letters according to their indexes
+
+## Vault Door 4
+### Flag
+* Flag : picoCTF{jU5t_4_bUnCh_0f_bYt3s_8f4a6cbf3b}
+### Thought Process
+* so its just an array with multiple different types of encoding, including ascii, hex, octal
+* convert it all to ascii
+### Steps Taken
+* convert everything to ascii
+
+## Vault Door 5
+### Flag
+* Flag : picoCTF{c0nv3rt1ng_fr0m_ba5e_64_e3152bf4}
+### Thought Process
+* base 64 encoded converts to url encoded, decode both
+### Steps Taken
+* put in cyberchef, eat 5star do nothing
+
+## Vault Door 6
+### Flag
+* Flag : picoCTF{n0t_mUcH_h4rD3r_tH4n_x0r_95be5dc}
+### Thought Process
+* hate java so took the entire code to python
+* realised if i just xor every byte with the `0x55` i find the password 
+### Steps Taken
+* xor every byte in `my_bytes` with `0x55`
+```py
+my_bytes = [
+    0x3b, 0x65, 0x21, 0x0a, 0x38, 0x00, 0x36, 0x1d,
+    0x0a, 0x3d, 0x61, 0x27, 0x11, 0x66, 0x27, 0x0a,
+    0x21, 0x1d, 0x61, 0x3b, 0x0a, 0x2d, 0x65, 0x27,
+    0x0a, 0x6c, 0x60, 0x37, 0x30, 0x60, 0x31, 0x36,
+]
+
+password = ''
+for i in range(32):
+    char = chr(my_bytes[i] ^ 0x55)     
+    password += char
+
+print(password)
+```
+
+## Vault Door 7
+### Flag
+* Flag : picoCTF{A_b1t_0f_b1t_sh1fTiNg_dc80e28124}
+### Thought Process
+* i mean, it was obviously long to bytes
+### Steps Taken
+```py
+longs = [
+    1096770097, 1952395366, 1600270708, 1601398833, 
+    1716808014, 1734304867, 942695730, 942748212
+]
+
+# Convert each long integer to a sequence of 4 bytes (big-endian order)
+byte_arrays = [long.to_bytes(4, byteorder='big') for long in longs]
+
+# Flatten the list of byte arrays into a single byte string
+byte_string = b''.join(byte_arrays)
+
+# Convert the byte string to a readable string
+decoded_string = byte_string.decode('utf-8', errors='ignore')
+print(decoded_string)
+```
+
+## Vault Door 7
+### Flag
+* Flag : picoCTF{A_b1t_0f_b1t_sh1fTiNg_dc80e28124}
+### Thought Process
+* did cat on the file but couldnt read properly cause it wasnt beautified
+* so thats exactly what i did
+* i read the code, finally its fun
+* took a pen and book
+* 32 char passwd, each character scrambled through multiple transformations, they are all independently transformed
+* have to reverse the switchbits function
+* 
+### Steps Taken
+```py
+longs = [
+    1096770097, 1952395366, 1600270708, 1601398833, 
+    1716808014, 1734304867, 942695730, 942748212
+]
+
+# Convert each long integer to a sequence of 4 bytes (big-endian order)
+byte_arrays = [long.to_bytes(4, byteorder='big') for long in longs]
+
+# Flatten the list of byte arrays into a single byte string
+byte_string = b''.join(byte_arrays)
+
+# Convert the byte string to a readable string
+decoded_string = byte_string.decode('utf-8', errors='ignore')
+print(decoded_string)
+```
+
